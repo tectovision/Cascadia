@@ -1,0 +1,1160 @@
+<!--m
+##########################################################################################
+# File        : $HeadURL: svn://kg6/EPOS_P8/trunk/PROJECT_IGS/CONFIG/CONFIG_GFZ_PPP_semisys.xml $
+# Keyword     : CONFIG
+# Created     : uhle, 2009-01-01
+# Last author : $Author: branan $
+# Last change : $Date: 2017-10-12 17:00:31 +0200 (Thu, 12 Oct 2017) $
+# Revision    : $Rev: 7235 $
+# Copyright   : GeoForschungsZentrum Potsdam
+#
+# Purpose     : Configuration file for EPN weekly analysis
+#
+############################# end_of_header ##############################################
+-->
+
+
+
+<control>
+<!--
+==========================================================================================
+        GLOBAL
+==========================================================================================
+-->
+        <global>
+                <environment>
+                           <!-- SYSTEM VARIABLES-->
+
+                                PROJECT                  CASCADIA_NET
+                                PROJECT_2                CASCADIA_NET_0
+                                AC_CODE                  gfz
+                                AC_CODE_CC               GFZ
+                                RX3_VERSION              _1_
+                                RX3_PROJECT              -PROJECT-
+                                RX3_SOLUTION             GRP_1       |quality station based ob igs 1235 mail    
+				VERSION 		 MIN_240209	
+
+                                HOME_PROCESSING /wrk/garcia/
+                                DIR_MAINTENANCE $DIR_MAINTENANCE        | ENV.variable
+                                DIR_EXT_INFO $DIR_EXT_INFO           | ENV.variable
+
+                                VERSIONS_SUB_DIR_NAME    ITERA
+
+                                ERROR_MAIL_TO 	garcia@gfz-potsdam.de   | $IGS_ERROR_MAIL_TO -->
+                                MAIL_FROM 	garcia@gfz-potsdam.de   | optional
+
+                                IGS_ARCHIVE /dsk/repro3/ARCHIVE/IGS_GRE_2014/
+<!--                                IGS_ARCHIVE /dsk/igs_archive/IGS -->
+
+                                EPOS8_BIN_EXEC $EPOS8_BIN_EXEC
+                                EPOS8_BIN_EXEC_TOOLS $EPOS8_BIN_EXEC_TOOLS
+                                EPOS8_TMP $EPOS8_TMP
+
+                                SATELLITE_SYSTEMS_AMBFIX G 
+
+                                START_FROM_SCRATCH       1
+                                DELETE_TEMP_FILES        1
+
+                                MAX_PARALLEL_PRECALL 0                        | 0 use std. (number of cores * 4) / n>0 number of threads
+                                MERGE_CLN_FILES          0
+                                SITE_CLUSTER_SELECT      0
+                                USE_NEW_DATA             1
+
+                                IGNORE_DATA_PATHES MGEXIGU,IGU,IGULONG,SAPOS
+
+                           <!-- USER DEFINED VARIABLES-->
+                                SP3_STEP                 900.
+                                INE_STEP                 300.
+                                SAMPLING_RATE_ANA        300
+                                SAMPLING_RATE_CLEAN      30
+                                LENGTH_DATA_SHORT        2500
+                                LENGTH_DATA_GAP          600
+                                LENGTH_AMBIGUITY_GAP     3600
+                                NUM_OBS_SHORT            8
+                                SATELLITE_SYSTEMS        G                    | e.g.   G R      where G=GPS, R=GLONASS, E=GALILEO
+                                WEIGHT_ELEVATION         75
+
+                                REFERENCE_FRAME UNDEF                   | optional here; will be changed via definition in -stacoord-
+                                REFERENCE_CLOCK UNDEF                   | set automatically during: /products_igs
+
+                                COMPRESS_TYPE gz                      | [Z|gz], how to compress files
+
+                                SUM_FILE_EXT_CLEAN NONE                    | extension of *sum files at this analysis step
+                                SUM_FILE_EXT_POST_A      nofix
+                                SUM_FILE_EXT_AMBFIX ambfix_cond
+                                SUM_FILE_EXT_POST_B      NONE
+
+                </environment>
+                <options>
+                                PM      debug 0                       | debug level for some global processes file/dir. open/close file commands
+                                PM      BINARY_ENDIAN BIG_ENDIAN
+                                PM      warning_email    1
+                                PM      db_columns all                     | comma-separated list of main processing steps (e.g. begin,analysis,products; or use "all"); additional keywords: mjd, yyyy_ddd, comment
+                </options>
+                <pathes>
+                            <!--Executables-->
+                                PATH.BIN -EPOS8_BIN_EXEC-             | executables (EPOS)
+                                PATH.BIN_TOOLS -EPOS8_BIN_EXEC_TOOLS-
+                                PATH.BIN_GGSP -EPOS8_BIN_GGSP-/CONTROL        | parameters (PROJECT_GGSP)
+
+                            <!-- Control files (e.g. params) -->
+                                PATH.CONTROL -EPOS8_BIN_PROJECT-/CONTROL
+
+                            <!--Temporary Directories-->
+                                PATH.TMP -EPOS8_TMP-/-USER-
+
+                            <!--IGR work dir.-->
+                                PATH.ARCH_ANA -IGS_ARCHIVE-/SAVE_ANA/-WWWW-
+                                PATH.ARCH_PROD -IGS_ARCHIVE-/SAVE_PROD_1d/-WWWW-
+
+                            <!--General files-->
+                                PATH.CNT -HOME_PROCESSING-/CONTROL
+                                PATH.RP_CNT /wrk/repro3/PROCESSING/CONTROL
+                                PATH.GEN_EOP -PATH.RP_CNT-/GEN_EOP
+			    <!--PATH.GEN_EOP -PATH.CNT-/GEN_EOP --> 	
+                                PATH.GEN_MOD -PATH.CNT-/GEN_MOD
+                                PATH.GEN_SAT -PATH.RP_CNT-/GEN_SAT
+			    <!--PATH.GEN_SAT -PATH.CNT-/GEN_SAT --> 
+                                PATH.GEN_STA -PATH.CNT-/GEN_STA
+                                PATH.CNT_COMMON -PATH.CNT-/CNT_COMMON
+                            <!--PATH.NANU -DIR_EXT_INFO-/NANU -->
+                                PATH.NANU -PATH.CNT-/NANU
+				PATH.CNT_PROJECT -PATH.CNT-/CNT_-PROJECT-_-VERSION-_-SATELLITE_SYSTEMS-_repro3 
+
+                            <!--Observations and Cleaning Informations-->
+                                PATH.COMMON -HOME_PROCESSING-/COMMON
+                                PATH.CLN_RAW -PATH.COMMON-/CLN_RAW/-YYYY-_-DDD-
+                                PATH.OBS_RAW -PATH.COMMON-/OBS_RAW/-YYYY-_-DDD-
+
+                                PATH.CLN -HOME_PROCESSING-/-PROJECT-/CLN/-YYYY-_-DDD-
+                                PATH.OBS -PATH.TMP-/-PROJECT-/OBS/-YYYY-_-DDD-
+
+                            <!-- NET directories-->
+                                PATH.NET -HOME_PROCESSING-/-PROJECT-_-VERSION-/ANA/-YYYY-_-DDD-/NET
+                                PATH.NET_PROT -PATH.NET-/PROT
+                                PATH.NET_STA -PATH.NET-/STA
+                                PATH.NET_PROT_SITE -PATH.NET-/STA/-SITE-/PROT
+                                PATH.NET_ORB -PATH.NET-/ORB
+                                PATH.NET_ORB_WRK -PATH.NET-/ORB/WRK
+                                PATH.NET_ORB_SITE -PATH.NET-/STA/-SITE-/ORB
+                                PATH.NET_CNT -PATH.NET-/STA/-SITE-/CNTPATH.ARCH_ANA
+                                PATH.NET_OUT_SITE -PATH.NET-/STA/-SITE-/OUT
+                                PATH.NET_OUT -PATH.NET-/OUT
+
+                            <!--Analysis directories-->
+                                PATH.ANA -HOME_PROCESSING-/-PROJECT-/ANA/-YYYY-_-DDD-
+                                PATH.BEG -PATH.ANA-/BEG
+                                PATH.ORB -PATH.ANA-/ORB
+                                PATH.ORB_WRK -PATH.ANA-/ORB/WRK
+                                PATH.OUT -PATH.ANA-/OUT
+                                PATH.PROT -PATH.ANA-/PROT
+                                PATH.OUT_PROD -PATH.ANA-/OUT_PROD
+                                PATH.SAVE_ANA -HOME_PROCESSING-/-PROJECT-/REPORT/SAVE_ANA/-WWWW-
+                                PATH.SAVE_PROD -HOME_PROCESSING-/-PROJECT-/REPORT/SAVE_PROD_1d/-YYYY-/-DDD-
+                </pathes>
+                <files>
+
+                 <!-- Main protocols; used Configuration file -->
+                        -MPWK   LOGFILE -PATH.PROT-/-LOGNUM-_MAIN_-VERSION-_-PROJECT-.log
+                        --PWK   LOGFILE_ERRORS -PATH.PROT-/-LOGNUM-_-VERSION-_ERROR_WARNING.log
+                        --PWK   CONFIG_WORK -PATH.PROT-/-LOGNUM-_CONFIG_FILE_-VERSION-_-PROJECT-.xml
+                        --PRK   prod_meta_info -PATH.CNT_PROJECT-/IGS_product_meta_info.cfg
+
+                        --PWK   database -HOME_PROCESSING-/-PROJECT-/-PROJECT-_STATUS_TABLE.-YYYY-
+
+                <!-- Control files -->
+                        --PRK   sta_data_sources -PATH.CNT_PROJECT-/sta_to_data_pathes.-PROJECT-_-VERSION-
+                        --PRK   parametr -PATH.CNT_PROJECT-/EPN_GRE_slv_ppp.par                   | parameter file
+                        --PRK   parametr_ppp -PATH.CNT_PROJECT-/EPN_GRE_slv_ppp.par                   | parameter file
+                        --PRK   parametr_post_b -PATH.CNT_PROJECT-/EPN_GRE_slv_ppp.par                   | parameter file
+                        --PRK   parametr_smp_check -PATH.CNT_PROJECT-/EPN_GRE_smp_check_MIN.par                 | sump check coordinates
+			--PRK   satorb_wei -PATH.CNT_PROJECT-/sat_orbconnect_weights.-YYYY-         	| for sump
+                        --PRK   satorb_ex -PATH.CNT_PROJECT-/sat_orbconnect_exclude.-YYYY-         	| for sump
+                        --PRK   clock_ref -PATH.CNT_COMMON-/sta_clock_ref_repro3
+                        --PRK   obs_type_sel_global -PATH.CNT_PROJECT-/sta_obs_type_select.FINAL
+                        --PWK   rejectsta -PATH.CNT_PROJECT-/sta_sinex_reject                     | for sump
+                        --PRK   sta_select_global -PATH.CNT_PROJECT-/sta_selection.-PROJECT-_-VERSION-
+                        --PRK   sattab_global -PATH.CNT_PROJECT-/sat_selection
+                        --PRK   stacoord_global -PATH.CNT_PROJECT-/sta_coordinates.-PROJECT-_-VERSION-
+
+                <!-- General files -->
+                        --PRK   plut /dsk/repro3/PROCESSING/CONTROL/GEN_EOP/eop_initials.igs     | initial pole values
+                        --PRK   nutation_cor /dsk/repro3/PROCESSING/CONTROL/GEN_EOP/nutation_cor.igs     | nutation corr from Bulletin
+                        --PRK   bulletin_A /dsk/repro3/PROCESSING/CONTROL/GEN_EOP/eop_finals_daily     | Bulletin A
+                        --PRK   tai-utc /dsk/repro3/PROCESSING/CONTROL/GEN_EOP/eop_tai-utc.dat      | leap seconds
+                        --PRK   markerant -PATH.CNT_PROJECT-/GFZ_custom_1.atx                           | antenna PCV
+                        --PRK   cc2noncc_dat -PATH.GEN_MOD-/mod_dcb_p1c1                             | P1C1 Diffential Code Biases
+                        --PRK   emod -PATH.BEG-/mod_gravity_field.GOCO6s                     | Daily Earth gravity model
+                        --PRK   emod_global -PATH.GEN_MOD-/GOCO6s.gfc                               | Global Earth gravity model
+                        --PRK   jpl_de405 -PATH.GEN_MOD-/mod_JPLEPH                               | Planet's ephemerids
+                        --PRK   octide -PATH.CNT_PROJECT-/mod_ocean_tide.fes2014b             | ocean tides harmonic
+                        --PRK   plate -PATH.GEN_MOD-/mod_plate_motion.nuvel                   | plate tectonicb
+                        --PRK   poleut1_tide -PATH.GEN_MOD-/mod_poleut1_tide_desai2016               | UT1 tides
+                        --PRK   receiver_glo -PATH.GEN_MOD-/mod_receiver_corr_types                  | Corr. of receiver code biases
+                        --PRK   tiut1 -PATH.GEN_MOD-/mod_tiut1
+                        --PRK   atmloads1s2 -PATH.GEN_MOD-/mod_atm_s1_s2_def_cm.dat                 | Atmosphere loading
+                        --PRK   ocpoltidload -PATH.GEN_MOD-/mod_opoleloadcoefcmcor.txt               | Ocean pole tide loading
+                        --PRK   gpt2_grid -PATH.GEN_MOD-/mod_gpt2_5.grd                           | Grid file for trop model GPT2/VMF
+                        --PRK   gpsp -PATH.GEN_SAT-/sat_parameters                           | GNSS satellite inform
+                        --PRK   cc2noncc_dat -PATH.GEN_STA-/sta_receiver_p1c1bias.hist
+                        --PRK   oload -PATH.CNT_PROJECT-/sta_oload_FES2014b.-PROJECT-_-VERSION-   	      | ocean load coeff.
+                        --PRK   snx_domes -PATH.CNT_PROJECT-/sta_domes.-PROJECT-_-VERSION-
+                        --PRK   conv_4to9 -PATH.CNT_PROJECT-/sta_4to9.-PROJECT-_-VERSION-                   | conversion station name 4 to 9
+                        --PRK   coord_meteo -PATH.CNT_PROJECT-/sta_coord_meteo.-PROJECT-_-VERSION-            | coordinates including height above NN
+                        --PRK   namnum -PATH.CNT_PROJECT-/sta_nam2num.-PROJECT-_-VERSION-                | list of station names and numbers
+                        --PRK   statio_global -PATH.CNT_PROJECT-/sta_weighting.-PROJECT-_-VERSION-       | minimal constrain by station where 1 means constrained and 7 uncontsrained 
+                        --PRK   takesta -PATH.CNT_PROJECT-/hetra_core.-PROJECT-_-VERSION-.snx             
+                        --PRK   rinex_crux -PATH.CNT_PROJECT-/sta_rinex_obs.crx
+                        --PRK   marker -PATH.CNT_PROJECT-/sta_antenna.-PROJECT-_-VERSION-
+                        --PRK   snx_receiver -PATH.CNT_PROJECT-/sta_receiver.-PROJECT-_-VERSION-
+                        --PRK   nanu_sum -PATH.NANU-/nanus_sum.current
+                        --PWK   sta_groups -PATH.CNT_COMMON-/sta_ambfix_groups.-PROJECT-_-VERSION-.cnf                 | groups of stations for AMBFIX baselines
+
+               <!-- Files from operational routine (repro3 / final) -->
+                        --PRK   orb_sp3_from -PATH.ARCH_PROD-/gfz_ovl-WWWWD-.sp3                      | needed in PPP orbit
+                        --PRK   orb_sp3_combi_from -PATH.ARCH_PROD-/gfz-WWWWD-.sp3
+                        --PRK   ineles_from -PATH.ARCH_ANA-/-YYYY-_-DDD-_-HH-_orb.ine
+                        --PRK   shadow_from -PATH.ARCH_ANA-/-YYYY-_-DDD-_shadow                     | yaw angle
+                        --PRK   sattab_from -PATH.ARCH_ANA-/-YYYY-_-DDD-_sattab                     | yaw angle
+                        --PRK   fused_from -PATH.ARCH_ANA-/-YYYY-_-DDD-_fused                      | fused navigation file
+                        --PRK   satclock_from -PATH.ARCH_ANA-/-YYYY-_-DDD-_sattime                    | fused navigation file
+                        --PRK   slvtim_from -PATH.ARCH_ANA-/-YYYY-_-DDD-_slv_times.sum              | solve times sum
+                        --PRK   orb_sp3_initial_from -PATH.ARCH_PROD-/gfz_ovl-WWWWD-.sp3                     | needed in TB and PPP
+
+                <!-- Common analysis files for all projects -->
+                        --PRK   logglobal -PATH.CNT_PROJECT-/CLN_GLOBAL_CASCADIA_NET
+                <!-- sta_select generated from list of obs-files -->
+                        --PWK   sta_select -PATH.BEG-/-YYYY-_-DDD-_sta_select_epoch
+                        --PWK   sta_select_data -PATH.BEG-/-YYYY-_-DDD-_sta_select_data
+                        --PWK   sta_select_base -PATH.BEG-/-YYYY-_-DDD-_sta_select_base
+                        --PWK   sta_select_wish -PATH.BEG-/-YYYY-_-DDD-_sta_select_wish
+                        --PWK   sta_select_prep -PATH.BEG-/-YYYY-_-DDD-_sta_select_prep
+                        --PWK   statio -PATH.BEG-/-YYYY-_-DDD-_statio
+                        --PWK   sattab -PATH.BEG-/-YYYY-_-DDD-_sattab
+                        --PRK   obs_type_sel -PATH.BEG-/-YYYY-_-DDD-_obs_types_select
+                        --PRK   stacoord -PATH.BEG-/-YYYY-_-DDD-_stacoord                        | epoch-specific station coordinates
+
+                <!-- Analysis files -->
+                        --PWK   lograw&& -PATH.CLN_RAW-/raw_cln.-YYYY-_-DDD-
+                        --PWK   logsta&& -PATH.CLN-/cln.-YYYY-_-DDD-
+                        --PWK   logneu&& -PATH.CLN-/cln_new.-YYYY-_-DDD-
+                        --PWK   md5_sum -PATH.CLN-/-YYYY-_-DDD-_md5_sum                         | MD5 sums of all used raw rinex files
+                        --PWK   rinex&& -PATH.OBS-/rin.-YYYY-_-DDD-
+                        --PWK   rin_raw&& -PATH.OBS_RAW-/raw_rin.-YYYY-_-DDD-
+                        -MPWK   tb_clock_off -PATH.OUT-/-YYYY-_-DDD-_tb_clock_off
+                        --PRK   inele -PATH.ORB-/-YYYY-_-DDD-_orb_new.ine                     | named inenew, updated
+                        --PRK   ineles -PATH.ORB-/-YYYY-_-DDD-_-HH_BEG-_orb.ine                | ine-file
+                        --PWK   nav_fused -PATH.BEG-/-YYYY-_-DDD-_fused
+                        --PWK   satclock -PATH.BEG-/-YYYY-_-DDD-_sattime
+                        <!-- --PWK   satclock_bef -PATH.ORB-/-YYYY-_-DDD-1-_sattime-->
+                        <!-- --PRK   nav_inele -PATH.ORB-/-YYYY-_-DDD-_orb_brdc.ine                    | brdc ine, initial  -->
+                        <!-- --PRK   orb_sp3 -PATH.ORB-/-YYYY-_-DDD-_orb_brdc.sp3                    | sp3-file         -->
+                        --PRK   orb_sp3_initial -PATH.ORB-/-YYYY-_-DDD-_orb_initial.sp3                    | sp3-file
+                        --PRK   orb_sp3_igr -PATH.ORB-/-YYYY-_-DDD-_-HH-_orb.sp3_igr
+                        --PRK   orb_sp3_igr_combi -PATH.ORB-/-YYYY-_-DDD-_-HH-_orb.sp3_igr_combi
+                        --PRK   shadow -PATH.ORB-/-YYYY-_-DDD-_shadow                          | shadow
+                        <!-- --PRK   shadow_prev -PATH.ORB-/-YYYY-_-DDD-1-_shadow                        | shadow of previous day  -->
+                        --PRK   yaw -PATH.ORB-/-YYYY-_-DDD-_yaw                             | yaw angle
+                        --PRK   yawtmp -PATH.ORB-/-YYYY-_-DDD-_yawtmp                          | yaw angle output for
+                        --PRK   orb&& -PATH.ORB_WRK-/-YYYY-_-DDD-_orb&& | orbit file
+                        --PRK   vaoe&& -PATH.ORB_WRK-/-YYYY-_-DDD-_vaoe&& | variation equations
+
+                        --PRK   amb -PATH.OUT-/-YYYY-_-DDD-_amb
+                        --PRK   cooroutp -PATH.OUT-/-YYYY-_-DDD-_sta_coordinates
+                        --PRK   obsdata -PATH.OUT-/-YYYY-_-DDD-_session
+                        --PRK   obseq -PATH.OUT-/-YYYY-_-DDD-_sgl_ses                         | obs.equ./sngl
+                        --PRK   obsresid -PATH.OUT-/-YYYY-_-DDD-_slv.res                         | resid file
+                        --PRK   obsresorb -PATH.OUT-/-YYYY-_-DDD-_pdm.res                         | residuals file of PDM
+                        --PRK   orbcorr -PATH.OUT-/-YYYY-_-DDD-_slv_orbit                       | orbit correction, TEM
+                        --PRK   orbcorr_fit -PATH.OUT-/-YYYY-_-DDD-_orbcorr_fit                     | orbit correction, TEM
+                        --PWK   outtimes -PATH.OUT-/-YYYY-_-DDD-_slv_times
+                        --PWK   outambig -PATH.OUT-/-YYYY-_-DDD-_slv_ambig
+                        --PWK   outtrop -PATH.OUT-/-YYYY-_-DDD-_slv_trop
+
+                        --PRK   p4_stec -PATH.OUT-/-YYYY-_-DDD-_p4_stec | Geometry-free (P4) co
+                        --PRK   dcb_p1p2 -PATH.OUT-/-YYYY-_-DDD-_dcb_p1p2 | Differential (P1-P2)
+                        --PRK   gim_map_archive /dsk/igs_archive/TECMAP/CDDIS/-YYYY-/igsg-DDD-0.-YY-i | Ionosphere TEC map from IGS
+<!-- for individual days switch to temp directory; before 2004 use igsg files -->
+<!--                        --PRK   gim_map_archive /home/maennelb/temp/igsg-DDD-0.-YY-i                  | Ionosphere TEC map from IGS-->
+<!--                        --PRK   gim_map_archive /dsk/igs_archive/TECMAP/CDDIS/-YYYY-/igrg-DDD-0.-YY-i | Ionosphere TEC map from IGS -->
+                         --PWK   gim_map -PATH.BEG-/igrg-DDD-0.-YY-i
+
+                        --PWK   parallel_status -PATH.NET-/STATUS/-YYYY-_-DDD-_net_parallel_status      | NET parallel_status file
+                        <!-- --PRK   satcontr -PATH.OUT-/-YYYY-_-DDD-_satcontr                        | satellite control???-->
+                        --PRK   sat_del -PATH.OUT-/-YYYY-_-DDD-_sat_delete
+                        --PRK   slv_param_corr -PATH.OUT-/-YYYY-_-DDD-_slv_param_corr                  | slv_param_corr
+                        --PRK   slv_param_cor_tmp -GLOBAL:slv_param_corr-.TMP
+                        --PRK   pol_predi -PATH.OUT_PROD-/-YYYY-_-DDD-_pol_predi.erp
+                        --PRK   slvambig -PATH.OUT-/-YYYY-_-DDD-_slv_ambig.sum                   | ambiguity
+                        --PRK   slvtim -PATH.OUT-/-YYYY-_-DDD-_slv_times.sum                   | solve times sum
+                        --PRK   slvtrop -PATH.OUT-/-YYYY-_-DDD-_slv_trop.sum                    | solve trop. sum
+                        --PRK   slv_param_corr -PATH.OUT-/-YYYY-_-DDD-_slv_param_corr                  | slv_param_corr
+                        --PRK   stkres -PATH.OUT-/-YYYY-_-DDD-_slv_resid.stk                   | statistic of residual
+                        --PRK   stkresorb -PATH.OUT-/-YYYY-_-DDD-_pdm_resid.stk                   | statistic of residual
+                        --PRK   storenor -PATH.OUT-/-YYYY-_-DDD-_storenor
+                        --PRK   storenor_post_a -PATH.OUT-/-YYYY-_-DDD-_storenor_post_a
+                        --PRK   yawmax -PATH.OUT-/-YYYY-_-DDD-_yawmax.sum                      | maximum yaw rate and
+                        --PWK   clock_ref_opt -PATH.OUT-/-YYYY-_-DDD-_sta_clock_ref_opt
+
+                        --PRK   pol_orb -PATH.OUT_PROD-/-YYYY-_-DDD-_pol_orb.erp                | for orbit generation
+                        --PRK   pol_gfz -PATH.OUT_PROD-/-YYYY-_-DDD-_pol_cor.erp                | pol corrections
+                        --PRK   pol_final -PATH.OUT_PROD-/-YYYY-_-DDD-_prod.erp                   | final EOP solution
+                        --PRK   sum -PATH.OUT_PROD-/-YYYY-_-DDD-_short_prod.sum             | short summary (only list of stations)
+                        --PRK   sp3bef -PATH.OUT_PROD-/-YYYY-_-DDD-1-_prod.sp3                 | sp3 file of previous day
+                        --PRK   sp3 -PATH.OUT_PROD-/-YYYY-_-DDD-_prod.sp3                   | overlapping sp3 with 15min sampling (22:00 - 02:00)
+                        --PRK   sp3_orbcut -PATH.OUT_PROD-/-YYYY-_-DDD-_prod_cut.sp3               | sp3 with full day interval (00:00-23:45)
+                        --PRK   sp3_5min -PATH.OUT_PROD-/-YYYY-_-DDD-_prod_5min.sp3              | overlapping sp3 with 5min sampling for FINAL's TB&PPP(22:00 - 02:00)
+                        --PWK   trop_snx -PATH.OUT_PROD-/-YYYY-_-DDD-_prod.tro
+                        --PWK   bias -PATH.OUT_PROD-/-YYYY-_-DDD-_prod.bias
+                        --PWK   srp -PATH.OUT_PROD-/-YYYY-_-DDD-_prod.srp
+                        --PWK   sinex -PATH.OUT_PROD-/-YYYY-_-DDD-_prod.snx
+
+                        <!-- ambfix -->
+                        --PRK   ambfix_cond -PATH.OUT-/-YYYY-_-DDD-_ambfix.cond                     | conditions for ambiguity fixing
+                        --PRK   ambfix_sta&& -PATH.TMP-/-YYYY-_-DDD-_ambfix_sta                      | epoch wise list of ambiguity flags per satellite
+                        --PRK   file_nofix -PATH.OUT-/-YYYY-_-DDD-_ambfix.nofix                    | no ambfix for this sta-sat-pairs
+                        --PRK   file_nofix_tmp -PATH.OUT-/-YYYY-_-DDD-_ambfix.nofix_tmp
+                        --PRK   resid_dif_chk_nofix -PATH.OUT-/-YYYY-_-DDD-_resid_dif_chk_nofix
+                        --PRK   resid_dif_chk -PATH.OUT-/-YYYY-_-DDD-_resid_dif_chk
+                        --PRK   resid_dif2ini -PATH.OUT-/-YYYY-_-DDD-_resid_dif2ini
+                        --PRK   orbcio -PATH.ORB-/-YYYY-_-DDD-_prod_orb_igs_1d.sp3               | daily orbit
+                        --PRK   sp3_quality_codes -PATH.CNT_PROJECT-/igs_sp3_quality_codes_std              | standard sp3 quality codes
+                        --PRK   orbdif -PATH.ORB-/-YYYY-_-DDD-_orbdif_sp3_igr_igs
+                        --PRK   vmf_grid /dsk/igs_archive/VMFG/-YYYY-/VMFG_-YYYY--MON--DOM-.H-HH-  | VMFG files download from TU Vienna
+                        --PWK   vmf_grid_work -PATH.BEG-/-YYYY-_-DDD-_VMFG                              | cated VMFG file
+
+                <!--Epoch Information files -->
+                        --PRK   epoch_info_work -PATH.OUT-/EPOCH_INF            | local
+
+                </files>
+        </global>
+
+<!--
+==========================================================================================
+##########################################################################################
+
+        PREPARATIONS
+
+##########################################################################################
+==========================================================================================
+-->
+        <begin>
+                <files>
+                        -MPWK   LOGFILE -PATH.PROT-/-LOGNUM-_BEGIN_-PROJECT-.log
+                </files>
+                <MERGE_files>
+                        <options>
+                         PM      do_anyway              0 | [0|1] do merge anyway
+                         PM      allow_new_input        0 | [0|1] allow (automatic) merge, if input files are newer then output file
+                         PM      cross_check            0 | [0|1] Compare existing sites in stacoord vs. the merged files
+                         PM      add_svn_header         0 | [0|1] Add additional header with blank svn keywords
+                        </options>
+
+                        <files>
+                        </files>
+                </MERGE_files>
+                <CREATE_staselect>
+                        <files>
+                                --PRK   sta_select_global -GLOBAL-
+                                --PRK   marker -GLOBAL-
+                                --PWK   sta_select -GLOBAL-
+                                --PWK   logglobal -GLOBAL-
+                        </files>
+                </CREATE_staselect>
+
+                <CREATE_temp_obs_types_select>
+                        <files>
+                                --PRK obs_type_sel_global -GLOBAL-
+                                --PRK obs_type_sel -GLOBAL-
+                        </files>
+                </CREATE_temp_obs_types_select>
+
+                <LOAD_sta_select_name2num>
+                        <files>
+                                --PRK   sta_select -GLOBAL-
+                                --PRK   marker -GLOBAL-
+                                --PRK   sta_data_sources -GLOBAL-
+                                --PWK   logglobal -GLOBAL-
+                        </files>
+                </LOAD_sta_select_name2num>
+
+        </begin>
+
+        <prepare_igs>
+                <files>
+                        -MPWK   LOGFILE -PATH.PROT-/-LOGNUM-_PREPARE_-PROJECT-.log
+                </files>
+
+                <COPY_FILES.prepare>
+                        <options>
+                                PM      compress_type -COMPRESS_TYPE-
+                                PM      compress 0
+                        </options>
+                        <files>
+                                --PRK   sp3.from -GLOBAL:orb_sp3_from-.-COMPRESS_TYPE-
+                                --PWK   sp3.to -GLOBAL:orb_sp3_igr-
+                                --PRK   ine.from -GLOBAL:ineles_from-.Z
+                                --PWK   ine.to -GLOBAL:ineles-
+                                --PRK   shadow.from -GLOBAL:shadow_from-.Z
+                                --PWK   shadow.to -GLOBAL:shadow-
+                                --PRK   satclock.from -GLOBAL:satclock_from-.Z
+                                --PWK   satclock.to -GLOBAL:satclock-
+                                --PRK   slvtim.from -GLOBAL:slvtim_from-.Z
+                                --PWK   slvtim.to -GLOBAL:slvtim-
+                                --PRK   sp3_initial.from -GLOBAL:orb_sp3_initial_from-.-COMPRESS_TYPE-
+                                --PWK   sp3_initial.to -GLOBAL:orb_sp3_initial-
+                        </files>
+                </COPY_FILES.prepare>
+<!--
+                <HAPPY_NEW_YEAR>
+                        <options>
+                                PM      doy_new_year    001
+                                PM      doy_save        020
+                                PM      doy_range       5
+                        </options>
+                        <files>
+                                --PWK   satorb_wei     -GLOBAL-
+                                --PWK   satorb_ex      -GLOBAL-
+                                --PWK   sattab         -GLOBAL-
+                                --PWK   sta_select     -GLOBAL-
+                        </files>
+                </HAPPY_NEW_YEAR>
+                -->
+                <CREATE_temp_staselect>
+                        <options>
+                                PM data_only_up_cluster_number     0
+                                PM include_backup_stations         1
+                                PM source_data_path                obs             | [obs|cln] - get list of files from PATH.RAWOBS or PATH.CLN
+                                PM check_EPOCH_INF                 0               | check data valid in epo_len from EPOCH_INF file. need BLOCK CREATE_temp_EPOCH_INF see. CONFIG_RTT
+                                PM check_EPOCH_INF_last_hour       0               | check data valid in epo_len from EPOCH_INF file for RTT routine job.
+                                PM check_EPOCH_INF_min_data        80              | check valid data [%] of epo_len in EPOCH_INF file.
+                                PM min_number_sta_select_base      30
+                                PM min_number_sta_select_data      1
+                                PM check_marker                    1               | check the antenna availibity from marker file
+                                PM check_receiver                  1               | check the receiver availibity from snx_receiver file
+                                PM ignore_data_pathes              IGU
+                        </options>
+                        <files>
+                                --PRK   sta_data_sources -GLOBAL-                | data sources
+                                --PRK   sta_select -GLOBAL-
+                                -MPWK   sta_select_prep -GLOBAL-                | created from sta_select, include also backup stations
+                                -MPWK   sta_select_base -GLOBAL-
+                                -MPWK   sta_select_wish -GLOBAL-                | wish list
+                                -MPWK   sta_select_data -GLOBAL-
+
+                                --PRK   logglobal -GLOBAL-
+                                --PRK   epoch_info_work -GLOBAL-                | currently unused
+                                --PRK   marker -GLOBAL-
+                                --PRK   snx_receiver -GLOBAL-
+                        </files>
+                </CREATE_temp_staselect>
+
+                <CREATE_sattab>
+                        <options>
+                              PM use_sat_systems                -SATELLITE_SYSTEMS-
+                        </options>
+                        <files>
+                              -MPWK LOGFILE -PATH.PROT-/-LOGNUM-_create_sattab.log
+                              --PRK sattab_global                  -GLOBAL-
+                              --PRK logglobal:BEG                  -GLOBAL-
+                              --PWK gpsp                           -GLOBAL-
+                              --PWK sattab                         -GLOBAL-
+                        </files>
+                </CREATE_sattab>
+
+                <CREATE_sta_coord_epoch>
+                        <options>
+                                PM      interval_info -MJD- 1                               | :start epoch: [mjd] and :length: [days]
+                                PM      max_psd_diff 0.1                                   | max 3D-diff between psd and mean psd model [mm]; default 0.5[mm]
+                                PM create_statio                                                 | create statio based on stations presence in reference frame solution
+                                PM      initial_weights 1 1                                   | phase code
+                        </options>
+                        <files>
+                                --PRK   statio_global -GLOBAL-                              | additional weighting information
+                                --PWK   statio -GLOBAL-                              | resulting statio
+                                --PRK   sta_select -GLOBAL:sta_select_prep-              | station selection
+                                --PRK   stacoord_global -GLOBAL-                              | initial set of station coordinates and velocities
+                                --PRK   snx_domes -GLOBAL-                              | station domes numbers
+				--PWK   coovel_snx              -PATH.GEN_STA-/ITRF2020P_posvel.snx      | ITRF2020 (or equivalent) station position/velocity solution
+                                --PWK   psd_snx                 -PATH.GEN_STA-/ITRF2020P_psd.snx         | ITRF2020 (or equivalent) post sesmic model components
+                                --PWK   soln_snx                -PATH.GEN_STA-/ITRF2020P_soln.snx        | ITRF2020 (or equivalent) solution epoch definition
+                                --PWK   stacoord                -GLOBAL-                              | epoch-specific station coordinates
+				
+				
+				
+                        </files>
+                </CREATE_sta_coord_epoch>
+
+        <CREATE_gravity_epoch>
+                        <options>
+                                PM      interval_info -MJD- 1                               | :start epoch: [mjd] and :length: [days]
+                        </options>
+                        <files>
+                                --PRK   emod_global -GLOBAL-                              | additional weighting information
+                                --PWK   emod -GLOBAL-                              | resulting statio
+                        </files>
+                </CREATE_gravity_epoch>
+                <CREATE_temp_VMFG>
+                        <files>
+                                --PRK   vmf_grid -GLOBAL-                | VMFG files download from TU wien
+                                --PWK   vmf_grid_work -GLOBAL-                | cated VMFG file
+                        </files>
+                </CREATE_temp_VMFG>
+        </prepare_igs>
+
+<!--
+==========================================================================================
+##########################################################################################
+
+        DATA PRE-PROCESSING
+
+##########################################################################################
+==========================================================================================
+-->
+        <include $EPOS8_INCLUDE_PREP_DATA_TB_ONCE>
+        <!-- use of include file 'INCLUDE_PREPARE_DATA_TB_ONCE.xml' -->
+
+        WAIT_MODE 0
+        MAX_SUB_PRECALL_ERRORS  100       | Max. allowed number of errors in CREATE_rinex_raw_cc2noncc_trimcorr
+
+<!--    /prepare_data -->
+<!--        INSERT /prepare_data/CREATE_rinex_raw_cc2noncc_trimcorr/pathes  :: PATH.RAWOBS_2  -GLOBAL- -->
+<!--        INSERT /prepare_data/CREATE_rinex_raw_cc2noncc_trimcorr/pathes  :: PATH.RAWOBS_3  -GLOBAL- -->
+        REPLACE /prepare_data/CREATE_rinex_raw_cc2noncc_trimcorr/options ::  PM save_md5_sum      0   | save MD5 sum of all raw rinex files
+
+<!--    /clean_data -->
+        MIN_DATA_PERCENT       50      | [%] min. data to be used
+        DEL_STA_LIMIT_GOOD     50                       | [%], TB_clean: delete sta with flag 'BAD', skip delete if number of good observations > del_sta_limit_good [>0]
+        DELETE  /clean_data/RUN_TB_clean/options  :: keep_end
+        INSERT  /clean_data/RUN_TB_clean/options  ::  RM check_phase_sys       G       | [G|R|E|C], satellite systems for which LC checks shall be done
+        REPLACE /clean_data/RUN_TB_clean/options  ::  RM cutoff_elevation      3       | lower limit of elevation
+
+<!--    /merge_cln -->
+
+<!--    /sample -->
+        DELETE /sample/RUN_sample/options         :: rnx3_to_2
+        DELETE_RINEX_RAW        1       | [0|1] - delete rin_raw files after /RUN_sample from PATH.TMP, otherwise they are copied to PATH.OBS_RAW
+
+        </include>
+
+<!--
+==========================================================================================
+##########################################################################################
+
+        PREPARE ORBIT AND CLOCKS
+
+                              RM ..no_sun
+                              RM ..no_relati
+                              RM shadow                         1 0
+                              RM pec-iter                       1
+                              RM imp_arc
+                              RM ..nodata
+                              RM ..use_sesshd                                                  | to get CTRL% from session header whith target "orbint" only
+                              RM ..noorbint
+                              RM ..tim_ctrl                     -MJD_BEG-. -SEC_BEG-. -MJD_END-. -SEC_END-.
+                              RM ..norelcor
+                              RM ..noyawcontrol
+                              RM pcv_file                       abs_sat:ele_rec:azi
+                              RM nosatazi_pcv
+                              RM ..pcv_file                     rel_sat:non_rec:ele
+                              RM ..norecazi_pcv -PATH.
+                              RM sumtrop
+                              RM trop_model                     SAAST GMF
+                              RM tide_displace                  SOLID_OCEAN_POLE
+                              RM no_oload_stop
+                              RM ..nophasewindup
+                              RM ..no_yawupdate
+                              RM ..pv_only_update
+                              RM ..pdm6_update
+                              RM big_dif                        50
+                              RM ..no_otl_hardisp
+                              RM jplradiation
+##########################################################################################
+==========================================================================================
+-->
+                <ppp_orbit>
+                <files>
+                         -MPWK   LOGFILE -PATH.PROT-/-LOGNUM-_PPP_ORBIT.log
+                         --PRK   orb_sp3 -GLOBAL:orb_sp3_igr-           | -PATH.ORB-/-YYYY-_-DDD-_orb.sp3
+                         --PWK orb&& -PATH.ORB_WRK-/-YYYY-_-DDD-_orb&&
+                         --PWK vaoe&& -PATH.ORB_WRK-/-YYYY-_-DDD-_vaoe&& | variation equations
+                </files>
+
+                <UPDATE_sattab>
+                         <files>
+                              --PRK sp3                            -TASK:orb_sp3-                 | -PATH.ORB-/-YYYY-_-DDD-_orb.sp3
+                              --PRK sattab                         -GLOBAL-
+                              --PRK logglobal                      -GLOBAL-
+                         </files>
+                </UPDATE_sattab>
+
+
+                <RUN_ORBIT>
+                        <options>
+                              PM version_runc                   new
+                              PM version_fltab                  new
+                              PM start_from_scratch             1                              | for first iteration only
+                              RM startwith                      orbit                          | special to ppp with existing orbits
+                              RM sp3_orb
+                              RM ..prilun
+                              RM ..ppp_mode
+                              RM target                         orbint
+                              RM geopot                         12  12   12   0  0  0
+                              RM em_not_tidefree
+                              RM ..listorbit                    1
+                              RM ..priearth
+                              RM seculpol                       51544.  0.054 0.357 0.00083 0.00395 | trend/year
+                              RM ..no_em_timvar
+                              RM ..only_twobody
+                              RM ..no_nonsphere
+                              RM ..no_solid_tides
+                              RM ..no_ocean_tides
+                              RM ..nocscorr
+                              RM ..no_mercury
+                              RM ..no_venus
+                              RM ..no_mars
+                              RM ..no_jupiter
+                              RM ..no_saturn
+                              RM ..no_uranus
+                              RM ..no_neptune
+                              RM ..no_pluto
+                              RM ..no_moon
+                              RM ..no_sun
+                              RM ..no_relati
+                              RM shadow                         1 0
+                              RM pec-iter                       1
+                              RM imp_arc
+                              RM ..nodata
+                              RM ..use_sesshd                                                  | to get CTRL% from session header whith target "orbint" only
+                              RM ..noorbint
+                              RM ..tim_ctrl                     -MJD_BEG-. -SEC_BEG-. -MJD_END-. -SEC_END-.
+                              RM ..norelcor
+                              RM ..noyawcontrol
+                              RM pcv_file                       abs_sat:ele_rec:azi
+                              RM nosatazi_pcv
+                              RM ..pcv_file                     rel_sat:non_rec:ele
+                              RM ..norecazi_pcv -PATH.
+                              RM sumtrop
+                              RM meteo_model                    GPT2                           | or GPT2 for new mete model ( from 2012 TU wien)
+                              RM trop_model                     SAAST VMF
+                              RM tide_displace                  SOLID_OCEAN_POLE
+                              RM no_oload_stop
+                              RM ..nophasewindup
+                              RM ..no_yawupdate
+                              RM ..pv_only_update
+                              RM ..pdm6_update
+                              RM big_dif                        50
+                              RM ..no_otl_hardisp
+                              RM      jplradiation
+                              RM      meanpole_IERS2018
+                        </options>
+                        <files>
+                              -MPWK LOGFILE                        -PATH.PROT-/-LOGNUM-_pdm7.log
+                              F-PRK emod                           -GLOBAL-                       | Earth gravity model
+                              F-PRK gpsp                           -GLOBAL-                       | GNSS satellite inform
+                              F-PRK jpl_de405                      -GLOBAL-                       | JPL planetary eph. 40
+                              F-PRK marker                         -GLOBAL-                       | ant. name and offset
+                              F-PRK markerant                      -GLOBAL-                       | antenna PCV
+                              F-PRK octide                         -GLOBAL-                       | ocean tides harmonic
+                              F-PRK oload                          -GLOBAL-                       | ocean load coeff.
+                              F-PRK plate                          -GLOBAL-                       | plate tectonics
+                              F-PRK plut                           -GLOBAL-                       | pole&ut1r
+                              F-PRK nutation_cor                   -GLOBAL-                       | nutation cor from BullA
+                              F-PRK poleut1_tide                   -GLOBAL-                       | poleut1_tide
+                              F-PRK sattab                         -GLOBAL-                       | sattab
+                              F-PRK stacoord                       -GLOBAL-                       | sta coordinates
+                              F-PRK satclock                       -GLOBAL-                       | navigation clocks
+                              F-PRK ineles                         -GLOBAL-                       | named ine, initial
+                              F-PRK inele                          -GLOBAL-                       | named inenew, updated
+                              F-PWK orbcorr_fit                    -GLOBAL-                       | orbit correction, TEM
+                              F-PRK obsdata                        -GLOBAL-                       | ses-file
+                              F-PWK obseq                          -GLOBAL-                       | obs.equ./sngl
+                              F-PWK orb&& -TASK-                         | orbit files (binary)
+                              F-PRK orb_sp3                        -TASK-                         | sp3 orbit file = INPUT
+                              F-PRK parametr                       -GLOBAL:parametr_ppp-          | parameter file
+                              F-PWK pdm_nominals                   tmp_pdm_nominals               | nominal file
+                              F-PWK slvambig                       -GLOBAL-                       | ambiguity
+                              F-PWK slvtim                         -GLOBAL-                       | solve times sum
+                              F-PWK slvtrop                        -GLOBAL-                       | solve trop. sum
+                              F-PRK obsresorb                      -GLOBAL-                       | residuals file of PDM
+                              F-PRK shadow                         -GLOBAL-                       | shadow
+                              F-PRK sta_select                     -GLOBAL:sta_select-
+                              F-PWK stkresorb                      -GLOBAL-                       | statistic of residual
+                              F-PWK vaoe&& -TASK-                         | variation equations
+                              F-PWK varh                           tmp_varh                       | variation temp.
+                              F-PWK yaw                            -GLOBAL-                       | yaw angle
+                              F-PWK yawtmp                         -GLOBAL-                       | yaw angle output for
+                              F-PRK yawmax                         -GLOBAL-                       | maximum yaw rate and
+                              F-PWK TMP&& tmp_&&                         | TMP-file
+                              F-PRK atmloads1s2                    -GLOBAL-
+                              F-PRK ocpoltidload                   -GLOBAL-
+                        </files>
+                </RUN_ORBIT>
+       </ppp_orbit>
+
+
+
+<!--
+==========================================================================================
+##########################################################################################
+
+        NET ANALYSIS (ITERATIVE)
+
+##########################################################################################
+==========================================================================================
+-->
+        <include $EPOS8_INCLUDE_ANALYSIS_NET>
+         <!-- use of include file 'INCLUDE_ANALYSIS_NET.xml' -->
+
+<!--    ITERATION_management -->
+        CHECK_FIRST_ITERA       1              | check for large outliers in 1st iteration
+        MAX_STA_OUTLIERS        :50            | max bad satellites per station [%] (0: no check)
+        MAX_PRN_OUTLIERS        :50            | max bad stations per satellite [%] (0: no check)
+        KEEP_CLOCK_OFFSETS      1
+        INSERT  /analysis/ITERATION_management/files ::  ---RK tb_clock_off  -GLOBAL- | list of time offset estimates from TB
+        REPLACE /analysis/ITERATION_management/options :: RM delete_sum_files 0
+        REPLACE /analysis/ITERATION_management/options :: RM fix_orbit 1
+        INSERT  /analysis/ITERATION_management/options :: PM check_core_update_stab 1 | enables core sta check  (key cost line station)
+        INSERT  /analysis/RUN_SOLVE/options       :: RM storenor[post_a]
+        INSERT  /analysis/RUN_SOLVE/files         :: F--WK storenor[post_a] -GLOBAL-_posta
+	REPLACE  /analysis/RUN_HETRA_COORD/files   :: F-PRK sta1 -GLOBAL:stacoord-
+        INSERT  /analysis/RUN_HETRA_COORD/files   :: F-PRK takesta                 -GLOBAL-
+
+<!--    CREATE_session -->
+        MIN_STA_PER_SAT         1         | [-] Min. num. of stations with data to a satellite (INSES)
+        MIN_STA_NUMBER          10        | [-] Min. number of stations required
+        MIN_STA_OBS             50 10 10  | [%] Min. obs per station; sorted by sat.system
+        MIN_SAT_OBS             50 10 10  | [%] Min. obs per satellite; sorted by sat.system
+        INSERT  /analysis/CREATE_session/options  ::  RM elevation  3
+<!--    RUN_ORBIT -->
+        INSERT  /analysis/RUN_ORBIT/options  ::  RO brdc_clock_res_check    1.0 | [km] - Limit of residuals when BRDC clocks were used
+        <!-- INSERT  /analysis/RUN_ORBIT/options  ::  RM no_atmloads1s2 -->
+        <!-- INSERT  /analysis/RUN_ORBIT/options  ::  RM no_ocpoltidload -->
+<!--        INSERT  /analysis/RUN_ORBIT/options  ::  RM no_albedo-->
+        INSERT  /analysis/RUN_ORBIT/options  ::  RM albedomodel           1 1 2
+        INSERT  /analysis/RUN_ORBIT/options  ::  RM meanpole_IERS2018
+        INSERT  /analysis/RUN_ORBIT/files    ::  F--RK orb_sp3      -GLOBAL:orb_sp3_igr-
+        INSERT  /analysis/RUN_ORBIT/options  ::  RM isbref_zero                 | reset a priori clock offset to zero for previous isb_ref_sta
+        INSERT  /analysis/RUN_ORBIT/options  ::  RM gal_yaw_model
+        INSERT  /analysis/RUN_ORBIT/options  ::  RM em_not_tidefree
+        INSERT  /analysis/RUN_ORBIT/options  ::  RM  sp3_orb
+        INSERT  /analysis/RUN_ORBIT/options  ::  RM  big_dif 50
+        INSERT  /analysis/RUN_ORBIT/options  ::  RM startwith                      data
+        INSERT  /analysis/RUN_ORBIT/options  ::  RM meteo_model                    GPT2                           | or GPT2 for new mete model ( from 2012 TU wien)
+        INSERT  /analysis/RUN_ORBIT/options  ::  RM trop_model                     SAAST VMF
+        INSERT  /analysis/RUN_ORBIT/options  ::  RM target                         obsmod
+    <!--    INSERT  /analysis/RUN_ORBIT/options  ::  RM iono_corr_higher_order         TEC_map  -->
+        INSERT  /analysis/RUN_ORBIT/options  ::  RM ant_align_to_N
+        INSERT  /analysis/RUN_ORBIT/files    ::  F-PWK dcb_p1p2                       -GLOBAL:dcb_p1p2-
+    <!--    INSERT  /analysis/RUN_ORBIT/files    ::  F-PWK gim_map                        -GLOBAL:gim_map- -->
+        INSERT  /analysis/RUN_ORBIT/files    ::  F-PWK p4_stec                        -GLOBAL:p4_stec-
+        INSERT  /analysis/RUN_ORBIT/files    ::  F-PRK VMFgrid                        -GLOBAL:vmf_grid_work-
+
+<!--    RUN_AMBFIX -->
+        INSERT  /analysis/RUN_AMBFIX/options  ::  RM sta_groups               2 | 1=baseline in groups; 2= also between groups added
+        INSERT  /analysis/RUN_AMBFIX/files ::  F--RK sta_groups        -GLOBAL-
+
+<!--    RUN_SOLVE -->
+        INSERT  /analysis/RUN_SOLVE/options  ::  RM fix_isb_refsta           -3 | ISB of RefSta fixed to that level
+        REPLACE /analysis/RUN_SOLVE/options  ::  RM combil3p3             500.0 | orig: 500.0 - Measurement Noise Ratio P3/L3
+        </include>
+
+<!--
+==========================================================================================
+##########################################################################################
+
+        CHECK CORE SITES
+
+##########################################################################################
+==========================================================================================
+-->
+        <check_sta_core1>
+                <files>
+                        -MPWK   LOGFILE -PATH.PROT-/-LOGNUM-_CHECK_STA_CORE1_-PROJECT-.log
+                </files>
+
+                <RUN_PRODUCT_SUMP>
+                        <options>
+                               PM      version_runc old
+                               PM      version_fltab old
+                               RM      automatic
+                               RM      innerconstraints
+                               RM      ignore unused_parameter
+                               RM      no_newstore
+                               RM      sum_neq
+                               RM      nocmpstatio
+                               RM      changeocc
+                               RM      prinormal 12
+                               RM      gmref 0.4415
+                               RM      gmstor 49352.5  0.4410  54043.  0.4418  99999.  0.4415
+                               RM      cooroutp
+                               RM      ..rejectsta
+                               RM      solutinterval 1.  1.
+                               RM      priconstraints
+                               RM      pricompress
+                               RM      stop_rms 100  | defaut value 100
+                        </options>
+                        <files>
+                               --PWK   LOGFILE -PATH.PROT-/-LOGNUM-_sump_stafree.log
+                               F-PRK   storenor -GLOBAL-                             | output of POST_B
+                               F-PRK   ref_staco -GLOBAL:stacoord-
+                               F-PRK   gpsp -GLOBAL-                             | GNSS satellite inform
+                               F-PRK   marker -GLOBAL-
+                               F-PRK   snx_antenna -GLOBAL:markerant-
+                               F-PRK   parametr -GLOBAL:parametr_smp_check-
+                               F-PRK   statio -GLOBAL-
+                               F-PRK   sattab -GLOBAL-
+                               F-PRK   snx_domes -GLOBAL-                              | station domes numbers
+                               F-PRK   snx_receiver -GLOBAL-
+                               F-PWK   cooroutp -GLOBAL-.smp_stafree
+                               F-PWK   slv_param_corr -PATH.OUT-/-YYYY-_-DDD-_smp_param_corr_stafree
+                               F-PWK   stkres -PATH.TMP-/-PID-_smp_stafree_stkres_tmp
+                               F-PWK   inphistory -PATH.TMP-/-PID-_smp_stafree_inphistory_tmp
+                               F-PWK   nominals -PATH.TMP-/-PID-_smp_stafree_nominals_tmp
+                        </files>
+                </RUN_PRODUCT_SUMP>
+
+                <RUN_HETRA_COORD>
+                        <options>
+                                PM      version_runc old
+                                PM      version_fltab old
+
+                                PM      create_takesta 0                                   | from -statio-
+                                PM      check_core_sta 30                                  | mm for residuals in hetra; =0 skipped
+
+                                RM      sta_num_4
+                                RM      repeat 5   2
+                                RM ...parabest                1110000
+                                RM ...staout                  1
+                                RM      ...rejecsta
+                                RM      ...takesta
+                                RM      solutfile
+                        </options>
+                        <files>
+                                --PWK   LOGFILE -PATH.PROT-/-LOGNUM-_hetra_slvfix_vs_smpfree.log
+                                --PRK   statio -GLOBAL-
+                                F-PRK   sta1 -GLOBAL:cooroutp-
+                                F-PRK   sta2 -GLOBAL:cooroutp-.smp_stafree
+                                F-PWK   solutfile -PATH.OUT-/-YYYY-_-DDD-_hetra_slvfix_vs_smpfree
+                        </files>
+                </RUN_HETRA_COORD>
+        </check_sta_core1>
+
+        <check_sta_core2>
+                <files>
+                        -MPWK   LOGFILE -PATH.PROT-/-LOGNUM-_CHECK_STA_CORE2_-PROJECT-.log
+                </files>
+
+                <RUN_HETRA_COORD>
+                        <options>
+                                PM      version_runc old
+                                PM      version_fltab old
+
+                                PM      create_takesta 0                                   | from -statio-
+                                PM      check_core_sta 20                                  | mm for residuals in hetra; =0 skipped
+
+                                RM      sta_num_4
+                                RM      repeat 5   2
+                                RM ...parabest                1110000
+                                RM      staout                1
+                                RM      ...rejecsta
+                                RM      takesta
+                                RM      solutfile
+                                PM      update_statio          7
+                        </options>
+                        <files>
+                                --PWK   LOGFILE -PATH.PROT-/-LOGNUM-_hetra_slvfix_vs_apriori.log
+                                --PRK   statio -GLOBAL-
+                                F-PRK   sta1 -GLOBAL:stacoord-
+                                F-PRK   sta2 -GLOBAL:cooroutp-
+                                F-PRK   takesta -GLOBAL-
+                                F-PRK   staout  -GLOBAL:cooroutp-_hetra_slvfix_vs_apriori
+                                F-PWK   solutfile -PATH.OUT-/-YYYY-_-DDD-_hetra_slvfix_vs_apriori
+                        </files>
+                </RUN_HETRA_COORD>
+        </check_sta_core2>
+
+<!--
+==========================================================================================
+##########################################################################################
+
+        RAPID POLE PREDICTION
+
+##########################################################################################
+==========================================================================================
+
+        <pole_prediction>
+                <files>
+                        -MPWK   LOGFILE -PATH.PROT-/-LOGNUM-_POL_PREDICTION_-PROJECT-.log
+                </files>
+
+                <RUN_POLE_PREDICTION>
+                        <options>
+                                PM      version_runc new
+                                PM      version_fltab new
+
+                                PM      limit_sta 5     | min number of stations
+                                PM      limit_rms 50     | solve fit must have reached this value
+
+                                RM      pri_bula
+                                RM      nutation_table -MJD-
+                        </options>
+                        <files>
+                                --PRK   stkres -GLOBAL-
+                                --PRK   slv_param_corr -GLOBAL-
+
+                                F-PRK   bulletin -GLOBAL:bulletin_A-
+                                F-PRK   tai-utc -GLOBAL-
+
+                                F-PRK   plut_in -GLOBAL:plut-
+                                F-PWK   plut_out -PATH.OUT-/pinit_update_with_BulA
+                                F-PRK   nutat_in -GLOBAL:nutation_cor-
+                                F-PWK   nutat_out -PATH.OUT-/nutation_cor_update
+                        </files>
+                </RUN_POLE_PREDICTION>
+
+                <RUN_POLE_PREPAIR>
+                        <files>
+                                --PWK   slv_param_cor_tmp -GLOBAL-
+                                --PRK   slv_param_corr:DAY,-1 -GLOBAL-
+                        </files>
+                </RUN_POLE_PREPAIR>
+
+        </pole_prediction>
+                                -->
+
+<!--
+==========================================================================================
+##########################################################################################
+
+        PRODUCT GENERATION ( ERP/TRO/SNX )
+
+##########################################################################################
+==========================================================================================
+-->
+
+       <products_igr>
+                <files>
+                         -MPWK   LOGFILE -PATH.PROT-/-LOGNUM-_PRODUCTS_-PROJECT-.log
+                </files>
+
+                <!-- cat of slv_param_corr, to have all ERP infos in one file -->
+<!--
+
+                <RUN_POLE_PREPAIR>
+                        <files>
+                                --PWK   LOGFILE -PATH.PROT-/-LOGNUM-_prod_erp_prepare.log
+
+                                --PWK   slv_param_cor_tmp -TASK-
+                                --PRK   slv_param_corr:ALL,-1 -GLOBAL-
+                        </files>
+                </RUN_POLE_PREPAIR>
+-->
+
+                <RUN_PRODUCT_POLE>
+                        <options>
+                              PM version_runc                   old
+                              PM version_fltab                  old
+                              PM input_from                     sump                           | [solve|sump] Input file format needed to define executable.
+                              RM ut_type                        ORIG                           | UT1|UT1R|ORIG
+                              RM ut_ref_epoch                   -MJD-.
+                              RM ut_dayfraction                 0.
+                              RM days/file                      1
+                              RM beg_end                        -MJD-1- -MJD-
+                              RM week                           -WWWW-
+                              RM ..test_initials
+                        </options>
+                        <files>
+                              --PWK LOGFILE                        -PATH.PROT-/-LOGNUM-_prod_erp.log
+                              F-PRK slv_param_cor                  -GLOBAL:slv_param_corr-
+                              F-PWK pol_gfz                        -GLOBAL-
+                              F-PWK pol_orb                        -GLOBAL-
+                              F-PWK pol_final                      -GLOBAL-
+                              F-PRK tiut1                          -GLOBAL-
+                              F-PWK tmp_pol                        -PATH.TMP-/-WWWWD-_igr_erp_tmp
+                        </files>
+                </RUN_PRODUCT_POLE>
+
+       </products_igr>
+
+<!--
+==========================================================================================
+##########################################################################################
+
+        ADDITIONAL RAPID PRODUCTS ( TRO )
+
+##########################################################################################
+==========================================================================================
+-->
+         <products_add>
+
+<!-- Convert daily -slv_param_corr- TROP values (generated in FINAL analysis) into igs format *.tro -->
+
+<!-- Convert daily -slv_param_corr- COORDINATES into format *.snx -->
+
+                <RUN_PRODUCT_SUMP.sinex>
+                        <options>
+                                PM      version_runc old
+                                PM      version_fltab old
+
+                                RM      automatic
+                                RM      innerconstraints
+                                RM      ..ut_calibration
+                                RM      ..constr_sta
+                                RM      ..ignore unused_parameter
+                                RM      make_sinex
+                                RM      miss_split allowed
+                                RM nocmpstatio                             | no compress statio, immer by sump
+                                RM      changeocc
+                                RM      gmref 0.4415          | 398600. +
+                                RM      gmstor 49352.5  0.4410  54043.  0.4418  99999.  0.4415         | 398600. +
+                                RM      cooroutp
+                                RM      ..no_newstore
+                                RM ..rejectsta                             | Stations in 'rejectsta' not used
+                                RM      solutinterval 1.  1.
+                                RM sum_neq                                 | NEQ in einem Block behandeln; starker Einfluss auf Auswertung!
+                                RM      stop_rms -SUMP_STOP_RMS-
+                                RM snx_normalequa                          | Output of SNX with NEQ format
+                                RM      rep_align_to_N
+                                RM      priinnerconstraints
+                                RM      prinormal 12
+                                RM      priinverse 12
+                                RM      priconneq 12
+                        </options>
+                        <files>
+                                --PWK   LOGFILE -PATH.PROT-/-LOGNUM-_prod_snx.log
+
+                                F-PRK   storenor -GLOBAL-
+                                <!--F-PRK satorb_wei              -GLOBAL--->
+                                <!--F-PWK satorb_ex               -GLOBAL--->
+                                F-PRK   rejectsta -GLOBAL-
+                                F-PRK   ref_staco -GLOBAL:stacoord-
+                                F-PRK   marker -GLOBAL-
+                                F-PRK   snx_domes -GLOBAL-
+                                F-PRK   snx_receiver -GLOBAL-
+                                F-PRK   snx_antenna -GLOBAL:markerant-
+                                F-PRK   gpsp -GLOBAL-                             | GNSS satellite inform
+                                F-PRK   tiut1 -GLOBAL-
+                                F-PRK   tai-utc -GLOBAL-
+                                F-PRK   sattab -GLOBAL-
+                                F-PRK   statio -GLOBAL-
+                                F-PRK   parametr -GLOBAL:parametr_smp_check-
+                                F-PRK   namnum -GLOBAL-
+                                F-PRK   prod_meta_info -GLOBAL-
+
+                                F-PWK   slv_param_corr -GLOBAL-.smp_snx_1d
+                                F-PWK   cooroutp -GLOBAL-.smp_snx_1d
+                                F-PWK   sinex -GLOBAL-
+                                F-PWK   newstore -GLOBAL:storenor-.smp_snx_1d
+                                F-PWK   inphistory -PATH.TMP-/-PID-_smp_snx_1d_inphistory_tmp
+                                F-PWK   nominals -PATH.TMP-/-PID-_smp_snx_1d_nominals_tmp
+                                F-PWK   stkres -PATH.TMP-/-PID-_smp_snx_1d_stkres_tmp
+                        </files>
+                </RUN_PRODUCT_SUMP.sinex>
+
+        <LOAD_sta_select_name2num>
+                        <options>
+                                PO      allow_duplicate 1
+                        </options>
+                        <files>
+                                --PRK   sta_select -GLOBAL:sta_select_global-
+                                --PRK   sta_data_sources -GLOBAL-
+                        </files>
+                </LOAD_sta_select_name2num>
+
+                <RUN_PRODUCT_TRO>
+                        <options>
+                                PM      trop_model VMF
+                                PM      elevation_angle 3                               | [deg]
+                                PM      sample_trop_prod 3600                            | [s] - Intervall of TRO product
+                                PM      trop_sinex_version 2.00                            | 0.01 or 2.00
+                        </options>
+                        <files>
+                                -MPWK   LOGFILE -PATH.PROT-/-LOGNUM-_prod_tro.log
+                                --PRK   slv_param_corr -GLOBAL-                        | Troposphere solution
+                                --PRK   stacoord -GLOBAL:cooroutp-               | Coordinates solution
+                                --PRK   last_pdm7_log -PATH.PROT-/-WHATEVER-_pdm7_3_post_b.log
+                                --PRK   sinex -GLOBAL-
+                                --PRK   conv_4to9 -GLOBAL-
+                                --PRK   prod_meta_info -GLOBAL-                        | PRODUCT META INFO: 'TRO' block
+                                --PRK   coord_meteo -GLOBAL-
+                                --PWK   trop_snx -GLOBAL-
+                        </files>
+                </RUN_PRODUCT_TRO>
+
+         </products_add>
+
+<!--
+==========================================================================================
+##########################################################################################
+
+        SAVE PRODUCT and ANALYSIS FILES
+
+##########################################################################################
+==========================================================================================
+-->
+        <save>
+                <files>
+                        -MPWK   LOGFILE -PATH.PROT-/-LOGNUM-_SAVE_PROD_and_ANALYSIS_FILES.log
+                </files>
+
+                <COPY_FILES.save_PROD_files>
+                        <options>
+                                PM      compress_type -COMPRESS_TYPE-
+                                PM      compress 0
+                        </options>
+                        <files>
+                                --PRK   snx.from -GLOBAL:sinex-
+				--PWK   snx.to -PATH.SAVE_PROD-/-AC_CODE_CC-_-RX3_VERSION-_-RX3_PROJECT-_-RX3_SOLUTION-_-YYYY-_-DDD-_SAT_-SATELLITE_SYSTEMS-_MIN-.SNX
+
+				--PRK   cooroutp1.from -GLOBAL:cooroutp-
+				--PWK   cooroutp1.to   -PATH.SAVE_PROD-/-YYYY-_-DDD-_sta_coordinates_min_-RX3_SOLUTION-.adj
+				
+				--PRK   cooroutp2.from -GLOBAL:cooroutp-.smp_stafree
+				--PWK   cooroutp2.to   -PATH.SAVE_PROD-/-YYYY-_-DDD-_sta_coordinates_min_-RX3_SOLUTION-.free
+				
+				--PRK   cooroutp3.from -GLOBAL:cooroutp-_hetra_slvfix_vs_apriori
+				--PWK   cooroutp3.to   -PATH.SAVE_PROD-/-YYYY-_-DDD-_sta_coordinates_hetra_adj_vs_apriori_min_-RX3_SOLUTION-
+				
+                        </files>
+                </COPY_FILES.save_PROD_files>
+
+                <COPY_FILES.save_ANA_files>
+                        <options>
+                                PM      compress_type -COMPRESS_TYPE-
+                                PM      compress 0
+                        </options>
+                        <files>
+                                --PRK   tro.from -GLOBAL:ambfix_cond-
+                                --PWK   tro.to -PATH.SAVE_ANA-/-YYYY-_-DDD-_ambfix.cond
+
+                                --PRK   snx.from -GLOBAL:stkres-
+                                --PWK   snx.to -PATH.SAVE_ANA-/-YYYY-_-DDD-_slv_resid.stk
+                        </files>
+                        <pathes>
+                                path_destination -GLOBAL:PATH.SAVE_ANA-
+                        </pathes>
+                 </COPY_FILES.save_ANA_files>
+        </save>
+
+</control>
+
+<!--
+==========================================================================================
+##########################################################################################
+
+        LOAD EXECUTABLES
+
+##########################################################################################
+==========================================================================================
+-->
+<include $EPOS8_INCLUDE_EXECUTABLES>
+ <!-- use of include file 'INCLUDE_EXECUTABLES.xml' via ENV '$EPOS8_INCLUDE_EXECUTABLES' -->
+</include>
+
+
+
+http://acc.igs.org/repro3/repro3_station_priority_list_060819.pdf
+
+https://epncb.eu/_productsservices/ReferenceFrame/Station_Classification.php
+
