@@ -170,7 +170,7 @@
                         --PRK   parametr_smp_check -PATH.CNT_PROJECT-/EPN_GRE_smp_check_MIN.par                 | sump check coordinates
 			--PRK   satorb_wei -PATH.CNT_PROJECT-/sat_orbconnect_weights.-YYYY-         	| for sump
                         --PRK   satorb_ex -PATH.CNT_PROJECT-/sat_orbconnect_exclude.-YYYY-         	| for sump
-                        --PRK   clock_ref -PATH.CNT_COMMON-/sta_clock_ref_repro3
+                        --PRK   clock_ref -PATH.CNT_COMMON-/sta_clock_ref.-PROJECT-
                         --PRK   obs_type_sel_global -PATH.CNT_PROJECT-/sta_obs_type_select.FINAL
                         --PWK   rejectsta -PATH.CNT_PROJECT-/sta_sinex_reject                     | for sump
                         --PRK   sta_select_global -PATH.CNT_PROJECT-/sta_selection.-PROJECT-_-VERSION-
